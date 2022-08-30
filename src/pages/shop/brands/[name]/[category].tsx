@@ -6,7 +6,8 @@ import { createCategoriesBrandsEnhancers } from '@/utils/enhancers';
 import { getTopNavCategoryLinks } from '@/utils/navUtils';
 import { getCompositionBySlug } from '@/utils/canvasClient';
 import { sluggify } from '@/utils/stringUtils';
-import { getBrands, getCategories } from '@/utils/bigCommerce';
+import { getCategories } from '@/utils/bigCommerce';
+import { getBrands } from '@/utils/commerce';
 import { NavLinkProp } from '@/components/atoms/NavLink';
 import CommonPageContainer from '@/components/containers/CommonContainer';
 

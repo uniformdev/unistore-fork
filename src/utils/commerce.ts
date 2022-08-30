@@ -20,6 +20,12 @@ export const getProductById = async (id: number): Promise<Type.Product | null> =
   return response.json();
 };
 
+export const getBrands = async (): Promise<Array<Brand.BrandFull>> => {
+  const response = await fetch(`${commerceProxyURL}/api/brands/get`);
+  if (!response.ok) throw new Error('get brands hash request error');
+  return response.json();
+};
+
 export const getPaginatedProducts = async ({
   keyword = '',
   category = '',

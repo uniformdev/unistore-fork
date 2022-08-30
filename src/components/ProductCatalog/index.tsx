@@ -32,7 +32,7 @@ const ProductCatalog = ({ showFilters, categories, brands }: ProductCatalogProps
   const [isDropdownOpened, setDropdownOpened] = useState(false);
   const [searchValue, setSearchValue] = useState('');
   const [products, setProducts] = useState<Type.Product[]>([]);
-  const [pagination, setPagination] = useState<Type.PaginationType | null>(null);
+  const [total, setTotal] = useState<number | null>(null);
   const router = useRouter();
   const { asPath, push } = router;
   const { q, sort, notAll } = router.query;
@@ -58,29 +58,28 @@ const ProductCatalog = ({ showFilters, categories, brands }: ProductCatalogProps
     const keyword = event?.target?.value || '';
     setSearchValue(keyword);
     setIsLoaded(true);
-    const searchProducts = await getPaginatedProducts({
+
+    const res = await getPaginatedProducts({
       keyword,
       category: activeCategory?.id?.toString() || '',
       brand: activeBrand?.id?.toString() || '',
       page,
       params: sort,
     });
-    if (searchProducts.pagination) {
-      const { pagination: paginationWithRequest, data } = searchProducts;
-      scrollUp();
-      setIsLoaded(false);
-      setProducts(data);
-      setPagination(paginationWithRequest);
-      return push(
-        {
-          pathname: pathname.toString(),
-          query: { ...query, page: page > paginationWithRequest?.totalPages || page < 1 ? 1 : page },
-        },
-        undefined,
-        { scroll: false, shallow: true }
-      );
-    }
-    return false;
+
+    scrollUp();
+    setIsLoaded(false);
+    setProducts(res.data);
+    setTotal(res.total);
+
+    return push(
+      {
+        pathname: pathname.toString(),
+        query: { ...query, page: page > res.total || page < 1 ? 1 : page },
+      },
+      undefined,
+      { scroll: false, shallow: true }
+    );
   };
 
   const onChangeSearch = useMemo(() => debounce(getProducts, AWAIT), [sort, brand, category, page]);
@@ -98,17 +97,8 @@ const ProductCatalog = ({ showFilters, categories, brands }: ProductCatalogProps
 
   useEffect(() => {
     if (brand || category || page) {
-      if (searchInput.current) {
-        searchInput.current.value = '';
-      }
-      push(
-        {
-          pathname: pathname.toString(),
-          query: { ...query, page },
-        },
-        undefined,
-        { scroll: false, shallow: true }
-      );
+      if (searchInput.current) searchInput.current.value = '';
+      push({ pathname: pathname.toString(), query: { ...query, page } }, undefined, { scroll: false, shallow: true });
       getProducts();
     }
   }, [sort, brand, category, page]);
@@ -116,9 +106,7 @@ const ProductCatalog = ({ showFilters, categories, brands }: ProductCatalogProps
   useEffect(() => onChangeSearch.cancel());
 
   const scrollUp = useCallback(() => {
-    if (document) {
-      document.documentElement.scrollTop = 0;
-    }
+    if (document) document.documentElement.scrollTop = 0;
   }, []);
 
   const toggleDropdown = useCallback(() => {
@@ -230,12 +218,7 @@ const ProductCatalog = ({ showFilters, categories, brands }: ProductCatalogProps
               <EmptyContent title="Sorry there are no products for this filter" isLoad={isLoaded} />
             )}
           </div>
-          <Pagination
-            currentPage={pagination?.currentPage || 1}
-            onPageChange={setPage}
-            totalCount={pagination?.total || 0}
-            pageSize={9}
-          />
+          <Pagination currentPage={page || 1} onPageChange={setPage} totalCount={total || 0} pageSize={9} />
         </div>
       </div>
     </div>

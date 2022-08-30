@@ -68,7 +68,7 @@ export const getPaginatedProducts = async ({
   page?: number;
   params?: string | string[];
   limit?: number;
-}): Promise<{ data: Type.Product[]; pagination: Type.PaginationType }> => {
+}): Promise<{ data: Type.Product[]; total: number }> => {
   const getParams = params?.toString().split('-');
   const [sort = '', direction = ''] = getParams || [];
 
@@ -82,9 +82,7 @@ export const getPaginatedProducts = async ({
 
   const { data, meta } = await response.json();
 
-  // FixMe: We need only total in pagination response
-
-  return { data, pagination: meta.pagination };
+  return { data, total: meta.pagination.total };
 };
 
 export const convertCommerceModel = async (data: any) => {

@@ -10,7 +10,6 @@ import EmptyContent from '@/atoms/EmptyContent';
 import Pagination from '@/components/Pagination';
 import { filterQuery, getBrandPath, getCategoryPath, getPageNumber, useSearchMeta } from '@/utils/search';
 import { getPaginatedProducts } from '@/utils/commerce';
-import { bigCommerceConfig } from '@/utils/bigCommerce/constants';
 
 export type ProductCatalogProps = {
   categories?: CategoryResult[];
@@ -235,7 +234,7 @@ const ProductCatalog = ({ showFilters, categories, brands }: ProductCatalogProps
             currentPage={pagination?.currentPage || 1}
             onPageChange={setPage}
             totalCount={pagination?.total || 0}
-            pageSize={Number(bigCommerceConfig.apiProductLimit)}
+            pageSize={9}
           />
         </div>
       </div>

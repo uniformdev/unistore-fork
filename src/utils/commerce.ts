@@ -1,7 +1,13 @@
 import getConfig from 'next/config';
+import { createBigCommerceClient } from '@uniformdev/canvas-bigcommerce';
 import { AddCartItemsRequest, DeleteCartItemRequest, PutCartItemRequest } from '@/typings/cartTypes';
 
 const { commerceProxyURL } = getConfig().publicRuntimeConfig;
+
+export const commerceClient = createBigCommerceClient({
+  storeHash: process.env.BIGCOMMERCE_STORE_HASH!,
+  token: process.env.BIGCOMMERCE_TOKEN!,
+});
 
 const REQUEST_OPTIONS: RequestInit = {
   credentials: 'include',

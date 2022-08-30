@@ -29,6 +29,7 @@ const config = {
   swcMinify: false,
   publicRuntimeConfig: {
     projectId: process.env.UNIFORM_PROJECT_ID,
+    commerceProxyURL: process.env.COMMERCE_PROXY_URL,
   },
 };
 

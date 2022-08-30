@@ -1,6 +1,7 @@
 import getConfig from 'next/config';
 import { createBigCommerceClient } from '@uniformdev/canvas-bigcommerce';
 import { AddCartItemsRequest, DeleteCartItemRequest, PutCartItemRequest } from '@/typings/cartTypes';
+import { sluggify } from './stringUtils';
 
 const { commerceProxyURL } = getConfig().publicRuntimeConfig;
 
@@ -36,6 +37,16 @@ export const getCategories = async (): Promise<Category.CategoryShort[]> => {
   const response = await fetch(`${commerceProxyURL}/api/categories/get`);
   if (!response.ok) throw new Error('get categories hash request error');
   return response.json();
+};
+
+export const getTopNavCategoryLinks = async () => {
+  const categories = await getCategories();
+  return categories
+    .filter(c => c.id !== 23)
+    ?.slice(0, 4)
+    .map(c => {
+      return { title: c.name, href: `/shop/${sluggify(c.name)}/` };
+    });
 };
 
 export const getProductsByCategories = async (categories: number[]): Promise<Type.Product[]> => {

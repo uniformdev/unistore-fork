@@ -8,7 +8,7 @@ import HamburgerIcon from '@/components/atoms/Icons/HamburgerIcons';
 import { NavLinkProp } from '@/components/atoms/NavLink';
 import { hiddenScroll } from '@/utils/scroll';
 import CloseIcon from '@/atoms/Icons/CloseIcons';
-import { Themes } from '@/utils/navUtils';
+import { Themes } from '@/constants';
 
 const Navbar = ({ topNavCategoryLinks }: { topNavCategoryLinks: Array<NavLinkProp> }) => {
   const [isOpen, setIsOpen] = React.useState(false);

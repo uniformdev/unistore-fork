@@ -6,7 +6,7 @@ import CurrencyFormatter from '@/components/CurrencyFormatter';
 import ActionButton from '@/components/atoms/ActionButton';
 import EmptyContent from '@/atoms/EmptyContent';
 import ShoppingCartItem from './ShoppingCartItem';
-import { Themes } from '@/utils/navUtils';
+import { Themes } from '@/constants';
 
 const ShoppingCart: NextPage = () => {
   const { cart, currency } = useCartContext();

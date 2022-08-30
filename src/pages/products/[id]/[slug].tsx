@@ -3,7 +3,7 @@ import type { GetStaticPaths, GetStaticProps, NextPage } from 'next';
 import { enhance, RootComponentInstance } from '@uniformdev/canvas';
 import { createProductDetailEnhancers } from '@/utils/enhancers';
 import { getProductsHash } from '@/utils/commerce';
-import { canvasClient, getState } from '@/utils/canvasClient';
+import { canvasClient, getState } from '@/utils/canvas';
 import { getTopNavCategoryLinks } from '@/utils/navUtils';
 import { sluggify } from '@/utils/stringUtils';
 import { NavLinkProp } from '@/components/atoms/NavLink';

@@ -3,7 +3,7 @@ import type { NextPage } from 'next';
 import { enhance, RootComponentInstance } from '@uniformdev/canvas';
 import { createCategoriesBrandsEnhancers } from '@/utils/enhancers';
 import { getTopNavCategoryLinks } from '@/utils/navUtils';
-import { getCompositionBySlug } from '@/utils/canvasClient';
+import { getCompositionBySlug } from '@/utils/canvas';
 import { sluggify } from '@/utils/stringUtils';
 import { getBrands, getCategories } from '@/utils/commerce';
 import { NavLinkProp } from '@/components/atoms/NavLink';

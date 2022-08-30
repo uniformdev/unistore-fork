@@ -20,4 +20,13 @@ declare namespace Type {
       url_standard: string;
     }[];
   }
+
+  interface PaginationType {
+    count: number;
+    currentPage: number;
+    perPage: number;
+    tooMany: boolean;
+    total: number;
+    totalPages: number;
+  }
 }

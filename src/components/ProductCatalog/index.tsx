@@ -1,15 +1,15 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { BrandResult, CategoryResult, ProductResult } from '@uniformdev/canvas-bigcommerce';
+import { BrandResult, CategoryResult } from '@uniformdev/canvas-bigcommerce';
 import Image from 'next/image';
 import debounce from 'lodash/debounce';
 import ProductItem from '@/components/ProductItem';
-import { filterQuery, getBrandPath, getCategoryPath, getPageNumber, useSearchMeta } from '@/utils/search';
 import Dropdown from '@/atoms/Dropdown';
-import ProductsAccessor, { PaginationType } from '@/utils/bigCommerce/ProductsAccessor';
 import EmptyContent from '@/atoms/EmptyContent';
 import Pagination from '@/components/Pagination';
+import { filterQuery, getBrandPath, getCategoryPath, getPageNumber, useSearchMeta } from '@/utils/search';
+import { getPaginatedProducts } from '@/utils/commerce';
 import { bigCommerceConfig } from '@/utils/bigCommerce/constants';
 
 export type ProductCatalogProps = {
@@ -32,8 +32,8 @@ const ProductCatalog = ({ showFilters, categories, brands }: ProductCatalogProps
   const searchInput = useRef<any>(null);
   const [isDropdownOpened, setDropdownOpened] = useState(false);
   const [searchValue, setSearchValue] = useState('');
-  const [products, setProducts] = useState<ProductResult[]>([]);
-  const [pagination, setPagination] = useState<PaginationType | null>(null);
+  const [products, setProducts] = useState<Type.Product[]>([]);
+  const [pagination, setPagination] = useState<Type.PaginationType | null>(null);
   const router = useRouter();
   const { asPath, push } = router;
   const { q, sort, notAll } = router.query;
@@ -59,13 +59,13 @@ const ProductCatalog = ({ showFilters, categories, brands }: ProductCatalogProps
     const keyword = event?.target?.value || '';
     setSearchValue(keyword);
     setIsLoaded(true);
-    const searchProducts = await ProductsAccessor.getProducts(
+    const searchProducts = await getPaginatedProducts({
       keyword,
-      activeCategory?.id?.toString() || '',
-      activeBrand?.id?.toString() || '',
+      category: activeCategory?.id?.toString() || '',
+      brand: activeBrand?.id?.toString() || '',
       page,
-      sort
-    );
+      params: sort,
+    });
     if (searchProducts.pagination) {
       const { pagination: paginationWithRequest, data } = searchProducts;
       scrollUp();

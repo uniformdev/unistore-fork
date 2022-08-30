@@ -5,9 +5,19 @@ const { commerceProxyURL } = getConfig().publicRuntimeConfig;
 
 const REQUEST_OPTIONS: RequestInit = {
   credentials: 'include',
-  headers: {
-    'Content-Type': 'application/json',
-  },
+  headers: { 'Content-Type': 'application/json' },
+};
+
+export const getProductsHash = async (): Promise<{ [key: string]: Type.Product }> => {
+  const response = await fetch(`${commerceProxyURL}/api/products/get-hash`);
+  if (!response.ok) throw new Error('get products hash request error');
+  return response.json();
+};
+
+export const getProductById = async (id: number): Promise<Type.Product | null> => {
+  const response = await fetch(`${commerceProxyURL}/api/products/get-by-id?id=${id}`);
+  if (!response.ok) throw new Error('get products by ids request error');
+  return response.json();
 };
 
 export const getCartProducts = () =>

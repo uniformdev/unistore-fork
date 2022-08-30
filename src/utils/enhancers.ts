@@ -5,7 +5,8 @@ import {
   GetProductsOptions,
   parameterIsBigCommerceProductQuery,
 } from '@uniformdev/canvas-bigcommerce';
-import { bigCommerceClient, getBrands, getCategories, getProduct, getProductsByCategory } from './bigCommerce';
+import { getProductById } from '@/utils/commerce';
+import { bigCommerceClient, getBrands, getCategories, getProductsByCategory } from './bigCommerce';
 
 export const bigCommerceEnhancer = createBigCommerceEnhancer({
   client: bigCommerceClient,
@@ -28,38 +29,37 @@ export const createDefaultEnhancerBuilder = () => {
   return new EnhancerBuilder().parameterType(CANVAS_BIGCOMMERCE_PARAMETER_TYPES, bigCommerceEnhancer);
 };
 
-export const createProductDetailEnhancers = ({ productId }: { productId: string | undefined }) => {
+export const createProductDetailEnhancers = ({ productId }: { productId: number }) => {
   return new EnhancerBuilder()
-    .data('product', async () => (productId ? await getProduct(productId) : undefined))
+    .data('product', () => getProductById(productId))
     .data('relatedProducts', async () => {
-      if (!productId) {
-        return undefined;
-      }
-      const product = await getProduct(productId);
+      const product = await getProductById(productId);
+      if (!product) return;
       const categories = product.categories?.map(i => i.toString());
       const relatedProducts = await getProductsByCategory(categories);
       return relatedProducts.filter(p => p.id !== product.id);
     })
     .parameterType(
       CANVAS_BIGCOMMERCE_PARAMETER_TYPES,
-      compose(createBigCommerceContextQueryEnhancer({ productId: productId! }), bigCommerceEnhancer)
+      compose(createBigCommerceContextQueryEnhancer({ productId }), bigCommerceEnhancer)
     );
 };
 
 const createBigCommerceContextQueryEnhancer = ({
   productId,
 }: {
-  productId: string;
+  productId: number;
 }): ComponentParameterEnhancer<string | GetProductsOptions | string[], string | GetProductsOptions | string[]> => {
   return {
     enhanceOne: async options => {
       const { parameter } = options;
       let processedValue = parameter.value;
       if (parameterIsBigCommerceProductQuery(parameter)) {
-        const product = await getProduct(productId);
+        const product = await getProductById(productId);
+        if (!product) return;
         processedValue = {
           ...parameter.value,
-          brand: product?.brand_id?.toString() || undefined,
+          brand: product?.brandId?.toString() || undefined,
         };
       }
       return processedValue;

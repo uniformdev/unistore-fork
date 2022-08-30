@@ -50,7 +50,7 @@ export const CartContext = createContext<CartContextProps>({
   modalOpen: false,
   cart: undefined,
   currency: { code: 'USD' },
-  setModalOpen: value => undefined,
+  setModalOpen: () => undefined,
 
   add: () => Promise.resolve(),
   update: () => Promise.resolve(),
@@ -62,7 +62,7 @@ export const CartContextProvider: React.FC = ({ children }) => {
   const [cart, setCart] = useState<Cart>();
   const [cartQueue, setNewQueue] = useState<AddCartItem[]>([]);
   const [modalOpen, setModalOpen] = useState(false);
-  const [cartSize, setCartSize, deleteCartSize] = useCookie('cartSize', null);
+  const [, setCartSize, deleteCartSize] = useCookie('cartSize', null);
 
   const [state, setState] = useState<Pick<CartContextProps, 'addingToCart' | 'updatingItem' | 'currency'>>({
     addingToCart: undefined,

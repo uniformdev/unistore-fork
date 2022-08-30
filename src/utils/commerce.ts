@@ -32,6 +32,11 @@ export const getCategories = async (): Promise<Category.CategoryShort[]> => {
   return response.json();
 };
 
+export const getProductsByCategories = async (categories: number[]): Promise<Type.Product[]> => {
+  const productsHash = await getProductsHash();
+  return Object.values(productsHash).filter(product => product.categories.some(c => categories.includes(c)));
+};
+
 export const getPaginatedProducts = async ({
   keyword = '',
   category = '',
@@ -59,6 +64,8 @@ export const getPaginatedProducts = async ({
   if (!response.ok) throw new Error('get paginated products request error');
 
   const { data, meta } = await response.json();
+
+  // FixMe: We need only total in pagination response
 
   return { data, pagination: meta.pagination };
 };

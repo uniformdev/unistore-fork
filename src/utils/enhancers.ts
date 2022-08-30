@@ -6,8 +6,8 @@ import {
   parameterIsBigCommerceProductQuery,
 } from '@uniformdev/canvas-bigcommerce';
 import { getProductById } from '@/utils/commerce';
-import { bigCommerceClient, getProductsByCategory } from './bigCommerce';
-import { getBrands, getCategories } from '@/utils/commerce';
+import { bigCommerceClient } from './bigCommerce';
+import { getBrands, getCategories, getProductsByCategories } from '@/utils/commerce';
 
 export const bigCommerceEnhancer = createBigCommerceEnhancer({
   client: bigCommerceClient,
@@ -36,8 +36,7 @@ export const createProductDetailEnhancers = ({ productId }: { productId: number 
     .data('relatedProducts', async () => {
       const product = await getProductById(productId);
       if (!product) return;
-      const categories = product.categories?.map(i => i.toString());
-      const relatedProducts = await getProductsByCategory(categories);
+      const relatedProducts = await getProductsByCategories(product.categories);
       return relatedProducts.filter(p => p.id !== product.id);
     })
     .parameterType(

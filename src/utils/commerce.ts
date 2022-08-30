@@ -76,6 +76,14 @@ export const getPaginatedProducts = async ({
   return { data, pagination: meta.pagination };
 };
 
+export const convertCommerceModel = async (data: any) => {
+  return fetch(`${commerceProxyURL}/api/actions/convert/commerce-model`, {
+    ...REQUEST_OPTIONS,
+    method: 'post',
+    body: JSON.stringify(data),
+  }).then(res => res.json());
+};
+
 export const getCartProducts = () =>
   fetch(`${commerceProxyURL}/api/cart`, {
     ...REQUEST_OPTIONS,

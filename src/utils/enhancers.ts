@@ -5,7 +5,7 @@ import {
   GetProductsOptions,
   parameterIsBigCommerceProductQuery,
 } from '@uniformdev/canvas-bigcommerce';
-import { getProductById } from '@/utils/commerce';
+import { getProductById, convertCommerceModel } from '@/utils/commerce';
 import { commerceClient, getBrands, getCategories, getProductsByCategories } from '@/utils/commerce';
 
 export const bigCommerceEnhancer = createBigCommerceEnhancer({
@@ -26,7 +26,10 @@ export const bigCommerceEnhancer = createBigCommerceEnhancer({
 });
 
 export const createDefaultEnhancerBuilder = () => {
-  return new EnhancerBuilder().parameterType(CANVAS_BIGCOMMERCE_PARAMETER_TYPES, bigCommerceEnhancer);
+  return new EnhancerBuilder().parameterType(
+    CANVAS_BIGCOMMERCE_PARAMETER_TYPES,
+    compose(bigCommerceEnhancer, convertCommerceModel)
+  );
 };
 
 export const createProductDetailEnhancers = ({ productId }: { productId: number }) => {
@@ -40,7 +43,7 @@ export const createProductDetailEnhancers = ({ productId }: { productId: number 
     })
     .parameterType(
       CANVAS_BIGCOMMERCE_PARAMETER_TYPES,
-      compose(createBigCommerceContextQueryEnhancer({ productId }), bigCommerceEnhancer)
+      compose(createBigCommerceContextQueryEnhancer({ productId }), compose(bigCommerceEnhancer, convertCommerceModel))
     );
 };
 

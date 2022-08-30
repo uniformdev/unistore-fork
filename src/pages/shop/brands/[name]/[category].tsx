@@ -18,9 +18,6 @@ const ShopCategoryBrand: NextPage<{
 export const getStaticPaths = async () => {
   const brands = await getBrands();
   const categories: Array<Category.CategoryShort> = (await getCategories()) || [];
-  // add known "shop all" category
-  const shopAll: Category.CategoryShort = { id: 23, name: 'Shop All', url: '/shop-all/', parent_id: 0 };
-  categories.push(shopAll);
 
   if (!brands || !categories) {
     return {

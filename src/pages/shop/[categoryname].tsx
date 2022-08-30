@@ -17,9 +17,6 @@ const ShopCategory: NextPage<{
 
 export const getStaticPaths = async () => {
   const categories: Array<Category.CategoryShort> = (await getCategories()) || [];
-  // add known "shop all" category
-  const shopAll: Category.CategoryShort = { id: 23, name: 'Shop All', url: '/shop-all/', parent_id: 0 };
-  categories.push(shopAll);
   return {
     paths: categories.map(category => `/shop/${sluggify(category.name)}`),
     fallback: false,

@@ -26,6 +26,12 @@ export const getBrands = async (): Promise<Array<Brand.BrandFull>> => {
   return response.json();
 };
 
+export const getCategories = async (): Promise<Category.CategoryShort[]> => {
+  const response = await fetch(`${commerceProxyURL}/api/categories/get`);
+  if (!response.ok) throw new Error('get categories hash request error');
+  return response.json();
+};
+
 export const getPaginatedProducts = async ({
   keyword = '',
   category = '',

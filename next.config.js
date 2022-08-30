@@ -1,7 +1,4 @@
 const path = require('path');
-const createNextPluginPreval = require('next-plugin-preval/config');
-
-const withNextPluginPreval = createNextPluginPreval();
 
 const config = {
   reactStrictMode: true,
@@ -33,4 +30,4 @@ const config = {
   },
 };
 
-module.exports = withNextPluginPreval(config);
+module.exports = config;

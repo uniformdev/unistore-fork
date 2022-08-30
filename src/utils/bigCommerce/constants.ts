@@ -4,7 +4,7 @@ const { serverRuntimeConfig } = getConfig() || {};
 
 const { bcStoreHash, bcApiToken, bcProductLimit, bcBrandLimit, bcCategoryLimit } = serverRuntimeConfig || {};
 
-// adding fallback to process.env since getConfig() returns undefined during preval execution
+// adding fallback to process.env since getConfig() returns undefined during execution
 export const bigCommerceConfig = {
   storeHash: bcStoreHash || process.env.BIGCOMMERCE_STORE_HASH,
   apiToken: bcApiToken || process.env.BIGCOMMERCE_TOKEN,

@@ -1,4 +1,4 @@
-import { getCategories } from './bigCommerce';
+import { getCategories } from './commerce';
 import { sluggify } from './stringUtils';
 
 export const getTopNavCategoryLinks = async () => {

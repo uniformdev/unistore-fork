@@ -6,8 +6,8 @@ import {
   parameterIsBigCommerceProductQuery,
 } from '@uniformdev/canvas-bigcommerce';
 import { getProductById } from '@/utils/commerce';
-import { bigCommerceClient, getCategories, getProductsByCategory } from './bigCommerce';
-import { getBrands } from '@/utils/commerce';
+import { bigCommerceClient, getProductsByCategory } from './bigCommerce';
+import { getBrands, getCategories } from '@/utils/commerce';
 
 export const bigCommerceEnhancer = createBigCommerceEnhancer({
   client: bigCommerceClient,
@@ -69,5 +69,5 @@ const createBigCommerceContextQueryEnhancer = ({
 };
 
 export const createCategoriesBrandsEnhancers = () => {
-  return new EnhancerBuilder().data('categories', async () => getCategories()).data('brands', getBrands);
+  return new EnhancerBuilder().data('categories', getCategories).data('brands', getBrands);
 };

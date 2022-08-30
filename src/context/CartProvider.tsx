@@ -3,6 +3,7 @@ import { useAsync } from 'react-use';
 import {
   AddCartItem,
   AddCartItemsRequest,
+  DeleteCartItem,
   DeleteCartItemRequest,
   GetCartResponse,
   PutCartItemRequest,
@@ -35,7 +36,7 @@ export type CartContextProps = {
 
   add: (productId: number, variantId: number, quantity?: number) => Promise<void>;
   update: (itemId: string, data: AddCartItem) => Promise<void>;
-  remove: (itemId: string) => Promise<void>;
+  remove: (itemId: string, data: DeleteCartItem) => Promise<void>;
   cartAmount: number;
   setModalOpen: (value: boolean) => void;
 };
@@ -197,9 +198,10 @@ export const CartContextProvider: React.FC = ({ children }) => {
     }));
   };
 
-  const remove = async (itemId: string) => {
+  const remove = async (itemId: string, data: DeleteCartItem) => {
     const body: DeleteCartItemRequest = {
       item_id: itemId,
+      line_item: data,
     };
 
     const response = await cartAPI.removeFromCart(body);
